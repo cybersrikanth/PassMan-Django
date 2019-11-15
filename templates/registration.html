@@ -1,0 +1,66 @@
+{% if user.is_authenticated %}
+    <script>
+    window.location.replace("/");
+</script>
+
+{% else %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PassMan Registration</title>
+    <script>
+    function check_pass() {
+    if (document.getElementById('pass1').value ==
+            document.getElementById('pass2').value) {
+        document.getElementById('submit').disabled = false;
+    } else {
+        document.getElementById('submit').disabled = true;
+    }
+}
+</script>
+</head>
+<body>
+<center><h1>Welcome to <i>Pass</i>word <i>Man</i>ager</h1></center>
+<form action="/accounts/register/" method="POST">
+    {% csrf_token %}<br>
+    <table align="center">
+    <tr>
+        <th>UserName</th>
+        <th><input type="text" name="username" minlength="4" required></th>
+    </tr>
+    <tr>
+        <th>First Name</th>
+        <th><input type="text" name="first" minlength="3" required></th>
+    </tr>
+    <tr>
+        <th>Last Name</th>
+        <th><input type="text" name="last" required></th>
+    </tr>
+    <tr>
+        <th>E-mail</th>
+        <th><input type="email" name="email" required></th>
+    </tr>
+    <tr>
+        <th>Password</th>
+        <th><input type="password" id = "pass1" name="password1" minlength="8" required onchange="check_pass()"></th>
+    </tr>
+    <tr>
+        <th>Confirm</th>
+        <th><input type="password" id = "pass2" name="password2" minlength="8" required onchange="check_pass()"></th>
+    </tr></table><br>
+    <center><input type="submit" id="submit" value="Register now"></center>
+    </form>
+<div align="center">
+        <h4>If you already have account, please login</h4>
+    <button onclick="window.location.replace('/accounts/login')">Login</button>
+</div>
+<div>
+    {% for i in messages %}<br>
+    <center><font color="red"> {{ i }}</font></center>
+    {% endfor %}
+</div>
+
+</body>
+</html>
+{% endif %}

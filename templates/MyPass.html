@@ -1,0 +1,57 @@
+{% if user.is_authenticated %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PassMan</title>
+</head>
+<body><header>
+    <h2>Welcome {{ user.username }}</h2>
+    <h4>This tool will help you to generate and remember strong passwords.</h4>
+</header>
+<form method="POST">
+    {% csrf_token %}<br>
+    <table align="center">
+    <tr>
+        <th>Website / URL</th>
+        <th><input type="url" name="url" placeholder="eg: https://facebook.com" required ></th>
+    </tr>
+    <tr>
+        <th>User Name</th>
+        <th><input type="text" name="username" minlength="2" placeholder="eg: CyberSrikanth" required></th>
+    </tr>
+    <tr>
+        <th>Password Length</th>
+        <th><input type="number" name="password" minlength="2" value="12" required></th>
+    </tr>
+        <tr><th>
+            <input type="checkbox" value = 'True' name="update"></th>
+        <th>Force update password</th>
+    </tr>
+    </table><br>
+    <center><input type="submit" value="Generate and Add"></center>
+    </form>
+<div align="center">
+        <h4>Clilck the bellow button to view all your password</h4>
+    <button onclick="window.location.replace('/accounts/pass')">Show my passwords</button>
+</div>
+<div>
+    {% for i in messages %}<br>
+    <center><font color="red"> {{ i }}</font></center>
+    {% endfor %}
+</div>
+<footer>
+<div align="right">
+        <h4>Please Logout after use</h4>
+    <button onclick="window.location.replace('/accounts/logout')">Logout</button>
+</div>
+</footer>
+</body>
+</html>
+    {% else %}
+    <script>
+    window.location.replace("/login/");
+    </script>
+{% endif %}

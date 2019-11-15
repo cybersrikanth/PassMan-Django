@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My passwords</title>
+</head>
+<body>
+<header>
+    <h2>Welcome {{ user.username }}</h2>
+    <h4>This tool will help you to generate and remember strong passwords.</h4>
+</header>
+<form action="/accounts/pass/" method="POST">
+    {% csrf_token %}<br>
+    <table align="center">
+    <tr>
+        <th>Enter your master password</th>
+        <th><input type="password" name="password" minlength="4" required></th>
+    </tr>
+
+    </table><br>
+    <center><input type="submit" id="submit" value="Show passwords"></center>
+    </form>
+<footer>
+<div align="right">
+        <h4>Please Logout after use</h4>
+    <button onclick="window.location.replace('/accounts/logout')">Logout</button>
+</div>
+</footer>
+<div>
+    {% for i in messages %}<br>
+    <center><font color="red"> {{ i }}</font></center>
+    {% endfor %}
+{% for i in data %}
+    <tr>
+    Website/URL : {{ i.url }}<br>
+    username : {{ i.user }}<br>
+    Password :<font color="red"> {{ i.pass }}</font><br><br>
+{% endfor %}
+</div>
+</body>
+</html>

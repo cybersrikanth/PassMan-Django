@@ -1,0 +1,44 @@
+{% if user.is_authenticated %}
+    <script>
+    window.location.replace("/");
+</script>
+
+{% else %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RealChat Login</title>
+</head>
+<body>
+
+    <center><h1>Welcome to <i>Pass</i>word <i>Man</i>ager</h1></center>
+<form action="/accounts/login/" method="POST">
+    {% csrf_token %}<br>
+    <table align="center">
+    <tr>
+        <th>UserName</th>
+        <th><input type="text" name="username" minlength="4" required></th>
+    </tr>
+
+    <tr>
+        <th>Password</th>
+        <th><input type="password" id = "pass" name="password" minlength="8" required onchange="check_pass()"></th>
+    </tr>
+    </table><br>
+    <center><input type="submit" id="submit" value="Login"></center>
+    </form>
+    <div align="center">
+        <h4>Please click signup to create new account</h4>
+    <button onclick="window.location.replace('/accounts/register')">SignUP</button>
+</div>
+    <div>
+    {% for i in messages %}<br>
+        <center><font color="red"> {{ i }}</font></center>
+    {% endfor %}
+    </div>
+
+</body>
+</html>
+
+{% endif %}
