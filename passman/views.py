@@ -75,24 +75,22 @@ def home(request):
             update = request.POST['update']
         except KeyError:
             update = False
-        if PassWords.objects.filter(username=encrypt(username, pass1),
-                                    website=encrypt(url, pass1)).exists() and not update:
+        if PassWords.objects.filter(username=username, website=url).exists() and not update:
             messages.info(request, 'data already exists')
             messages.info(request, 'If you like to update password please check the above checkbox')
             return render(request, 'MyPass.html')
-        elif not PassWords.objects.filter(username=encrypt(username, pass1),
-                                          website=encrypt(url, pass1)).exists():
-            tmp = PassWords(username=encrypt(username, pass1).decode(),
+        elif not PassWords.objects.filter(username=username, website=url).exists():
+            tmp = PassWords(username=username,
                             passwd=encrypt(passwd, pass1).decode(),
-                            website=encrypt(url, pass1).decode(),
+                            website=url,
                             user_id=request.user.id)
             tmp.save()
             messages.info(request, 'data inserted successfully')
             messages.info(request, 'Generated password: ' + passwd)
             return render(request, 'MyPass.html')
         else:
-            PassWords.objects.filter(username=encrypt(username,pass1),
-                                     website=encrypt(url,pass1)).update(passwd=encrypt(passwd,pass1))
+            PassWords.objects.filter(username=username,
+                                     website=url).update(passwd=encrypt(passwd, pass1).decode())
             messages.info(request, 'password updated')
             messages.info(request, 'new password: ' + passwd)
             return render(request, 'MyPass.html')
@@ -128,9 +126,9 @@ def conv_to_list(obj):
     l = []
     for i in obj:
         d = {
-            'url': decrypt(i.website,pass1).decode(),
-            'user': decrypt(i.username,pass1).decode(),
-            'pass': decrypt(i.passwd,pass1).decode()
+            'url': i.website,
+            'user': i.username,
+            'pass': decrypt(i.passwd, pass1).decode()
         }
         l.append(d)
     return l
